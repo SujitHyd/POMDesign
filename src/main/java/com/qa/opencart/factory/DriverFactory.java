@@ -34,6 +34,8 @@ public class DriverFactory {
 	
 	private static final Logger log = LogManager.getLogger(DriverFactory.class);
 	
+	public OptionsManager optionsManager;
+	
 	/**
 	 * This method initialize the WebDriver with browser 
 	 * @param browserName
@@ -43,6 +45,7 @@ public class DriverFactory {
 	public WebDriver initDriver(Properties prop) {
 		
 		String browserName = prop.getProperty("browser");
+		optionsManager = new OptionsManager(prop);
 		
 		//System.out.println("browser name : " + browserName);
 		log.info("browser name : " + browserName);
@@ -55,17 +58,17 @@ public class DriverFactory {
 		switch (browserName.trim().toLowerCase()) {
 		case "chrome":
 			//driver = new ChromeDriver();
-			tlDriver.set(new ChromeDriver());
+			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
 			break;
 			
 		case "firefox":
 			//driver = new FirefoxDriver();
-			tlDriver.set(new FirefoxDriver());
+			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
 			break;
 			
 		case "edge":
 			//driver = new EdgeDriver();
-			tlDriver.set(new EdgeDriver());
+			tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
 			break;
 			
 		case "safari":
@@ -95,31 +98,61 @@ public class DriverFactory {
 	public static WebDriver getDriver() {
 		return tlDriver.get();
 	}
-	
-	
-	
+		
 	/**
 	 * This method initialize the proeprties method with file 
 	 * return the properties object
 	 * 
 	 */
-	
-	
+		
 	public Properties initProp() {
 		
 		prop = new Properties();
+		FileInputStream ip = null;
+
+		String envName = System.getProperty("env");
+		log.info("Env name =======>" + envName);
+
 		try {
-			FileInputStream ip = new FileInputStream("./src/test/resources/config/config.properties");
-			prop.load(ip);
+			if (envName == null) {
+				log.warn("no env.. is passed, hence running tcs on QA environment...by default..");
+				ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
+			}
+
+			else {
+				switch (envName.trim().toLowerCase()) {
+				case "qa":
+					ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
+					break;
+				case "stage":
+					ip = new FileInputStream("./src/test/resources/config/config.stage.properties");
+					break;
+				case "uat":
+					ip = new FileInputStream("./src/test/resources/config/config.uat.properties");
+					break;
+				case "dev":
+					ip = new FileInputStream("./src/test/resources/config/config.dev.properties");
+					break;
+				case "prod":
+					ip = new FileInputStream("./src/test/resources/config/config.properties");
+					break;
+				default:
+					log.error("Env value is invalid...plz pass the right env value..");
+					throw new FrameworkException("====INVALID ENVIRONMENT====");
+				}
+			}
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+
+		try {
+			prop.load(ip);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return prop;
-		
-		
 	}
 	
 	public static File getScreenshotFile() {
