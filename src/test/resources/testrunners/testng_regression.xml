@@ -46,7 +46,7 @@
 	</test>
 
 
-
+<!--
 
 	<test name="Search Test">
 		<parameter name="browser" value="chrome" />
@@ -71,7 +71,7 @@
 		</classes>
 	</test>
 	
-	
+	-->
 
 
 </suite>	

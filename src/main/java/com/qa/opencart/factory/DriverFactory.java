@@ -115,7 +115,7 @@ public class DriverFactory {
 
 		try {
 			if (envName == null) {
-				log.warn("no env.. is passed, hence running tcs on QA environment...by default..");
+				log.warn("no env.. is passed, hence running TCs on QA environment...by default..");
 				ip = new FileInputStream("./src/test/resources/config/config.qa.properties");
 			}
 
