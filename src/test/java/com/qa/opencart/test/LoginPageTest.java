@@ -24,7 +24,7 @@ import io.qameta.allure.Story;
 public class LoginPageTest extends BaseTest{
 	
 	
-	@Description("login page title test....")
+	@Description("login page title test .........")
 	@Link("")
 	@Owner("Naveen Automation Labs")
 	@Severity(SeverityLevel.MINOR)	
