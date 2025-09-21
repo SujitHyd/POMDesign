@@ -49,7 +49,7 @@ pipeline
 
                 
      
-        stage('Publish Regression Allure Reports On QA') {
+        stage('Publish Allure Reports On QA') {
            steps {
                 script {
                     allure([
@@ -123,7 +123,7 @@ pipeline
             }
         }
         
-         stage('Publish Regression Allure Reports On Production ') {
+         stage('Publish Allure Reports On Production ') {
            steps {
                 script {
                     allure([
