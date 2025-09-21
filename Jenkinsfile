@@ -36,7 +36,7 @@ pipeline
         
         
                 
-        stage('Regression Automation Tests') {
+        stage('Regression Automation Tests On QA') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/SujitHyd/POMDesign'
@@ -82,7 +82,7 @@ pipeline
             }
         }
         
-        stage('Sanity Automation Test') {
+        stage('Sanity Automation Test On Stage' ) {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/SujitHyd/POMDesign'
@@ -113,7 +113,7 @@ pipeline
             }
         }
         
-        stage('Sanity Automation Test') {
+        stage('Sanity Automation Test On Production') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     git 'https://github.com/SujitHyd/POMDesign'
