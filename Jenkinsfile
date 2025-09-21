@@ -49,7 +49,7 @@ pipeline
 
                 
      
-        stage('Publish Allure Reports') {
+        stage('Publish Regression Allure Reports On QA') {
            steps {
                 script {
                     allure([
@@ -64,7 +64,7 @@ pipeline
         }
         
         
-        stage('Publish ChainTest HTML Report'){
+        stage('Publish Regression ChainTest Report'){
             steps{
                      publishHTML([allowMissing: false,
                                   alwaysLinkToLastBuild: false, 
@@ -94,7 +94,7 @@ pipeline
         
         
         
-        stage('Publish sanity ChainTest Report'){
+        stage('Publish Staging Sanity ChainTest Report'){
             steps{
                      publishHTML([allowMissing: false,
                                   alwaysLinkToLastBuild: false, 
@@ -119,6 +119,20 @@ pipeline
                     git 'https://github.com/SujitHyd/POMDesign'
                     bat "mvn clean test -Dsurefire.suiteXmlFiles=src/test/resources/testrunners/testng_sanity.xml -Denv=stage"
                     
+                }
+            }
+        }
+        
+         stage('Publish Regression Allure Reports On Production ') {
+           steps {
+                script {
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: '/allure-results']]
+                    ])
                 }
             }
         }
